@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+service Chat {
+  rpc join(JoinRequest) returns (stream Message){}
+  rpc send(Message) returns (Message){}
+}
+ 
+message Message {
+  string user = 1;
+  string message = 2;
+}
+
+message JoinRequest {
+  string user = 1;
+}
