@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+service Calculator {
+  rpc getResult(Expression) returns (Result);
+}
+
+message Expression {
+  string operator = 1;
+  double num1 = 2;
+  double num2 = 3;
+}
+
+message Result {
+  double result = 1;
+}
