@@ -11,7 +11,7 @@ let curId = 1;
 
 const formatBody = (req, res) => {
   if (req.accepts('xml') && !req.accepts('json')) {
-    return convert.json2xml(res, { compact: true });
+    return convert.json2xml({tasks: res}, { compact: true });
   } else {
     return res;
   }
