@@ -1,0 +1,38 @@
+<html>
+  <body>
+    <h2>Chat window</h2>
+    <div id="chat-window"></div>
+    <input type="text" id="text" />
+    <button id="send">Send</button>
+  </body>
+  <script language="javascript">
+    var connection = new WebSocket("ws://localhost:8080/chat");
+    connection.onopen = function () {
+      console.log("Connection open!");
+    };
+
+    connection.onclose = function () {
+      console.log("Connection closed");
+    };
+
+    connection.onmessage = function (e) {
+      var server_message = e.data;
+      document.getElementById("chat-window").innerHTML +=
+        server_message + "<br>";
+    };
+
+    function click() {
+      connection.send(document.getElementById("text").value);
+      document.getElementById("text").value = "";
+    }
+
+    function key(e) {
+      if (e.keyCode == 13) {
+        click();
+      }
+    }
+
+    document.getElementById("send").addEventListener("click", click);
+    document.getElementById("text").addEventListener("keypress", key);
+  </script>
+</html>

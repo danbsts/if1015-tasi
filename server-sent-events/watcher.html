@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <form>
+      <h2>Chat window</h2>
+      <div id="result"></div>
+    </form>
+  </body>
+  <script language="javascript">
+    var source = new EventSource("http://localhost:9090");
+    source.onmessage = function (event) {
+      document.getElementById("result").innerHTML +=
+        event.data + "<br/>";
+    };
+  </script>
+</html>
