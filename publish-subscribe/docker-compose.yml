@@ -1,27 +1,43 @@
-version: '3.7'
+version: '2.4'
 services:
   publisher:
     build:
       context: ./publisher
+    restart: always
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
   server:
     build:
       context: ./server
     ports:
       - 8080:8080
+    restart: always
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
   client:
     build:
       context: ./client
     stdin_open: true
     ports:
       - 80:3000
+    depends_on:
+      - server
     volumes:
       - ./client/src:/app/src
       - ./client/public:/app/public
   rabbitmq:
-    image: rabbitmq:3.8-management-alpine
+    build:
+      context: ./rabbitmq
     ports:
       - 5672:5672
       - 15672:15672
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
 volumes:
