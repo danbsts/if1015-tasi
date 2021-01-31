@@ -1,9 +1,13 @@
 var express = require('express')
 var bodyParser = require("body-parser");
 var convert = require('xml-js')
+var cors = require('cors')
+var tags = require('./response')
 
 var app = express();
 app.use(bodyParser.json());
+app.use(cors())
+
 
 const tasks = [];
 
@@ -134,6 +138,21 @@ app.put('/tasks', (req, res) => {
   res.send();
 })
 
-app.listen(3000, () => {
+app.get('/tags/:id', (req, res) => {
+  const id = req.params.id;
+  const {tags: data} = tags;
+  res.send(data.find(tag => tag.id === id));
+})
+
+app.get('/tags', (_, res) => {
+  const {tags: data} = tags;
+  res.send(data);
+})
+
+app.post('/tags', (req, res) => {
+  console.log(req.body);
+})
+
+app.listen(5000, () => {
   console.log('stoy ouvindo.');
 })
